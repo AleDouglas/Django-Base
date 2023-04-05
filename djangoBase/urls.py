@@ -16,8 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include # Adicionado INCLUDE para adicionar uma rota url do aplicativo
+from django.conf import settings
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(djangoapp.urls)), # Rota para nossa aplicação djangoapp
+
+
+    # User management
+    path('accounts/', include('allauth.urls')), # Rota de usuários
+
+    # Local
+    path('', include('djangoapp.urls')), # Rota para nossa aplicação djangoapp
 ]
+
+
+if settings.DEBUG == True:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
